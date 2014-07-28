@@ -13,7 +13,7 @@ body{
 }
 
 #div1{
-	background-image: url('../images/waterTexture.jpg');
+	background-image: url('/static/images/waterTexture.jpg');
 	height:1000px;
 }
 
@@ -26,11 +26,11 @@ body{
 }
 
 #div2{
-	background-image: url('../images/Swimming-Olympics-V1.jpg');
+	background-image: url('/static/images/Swimming-Olympics-V1.jpg');
 }
 
 #div3{
-	background-image: url('../images/SwimmingTopView.jpg');
+	background-image: url('/static/images/SwimmingTopView.jpg');
 }
 
 #div4{
