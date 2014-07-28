@@ -5,7 +5,7 @@ body{
 
 .sectionDiv{
 	width:100%;
-	height: 1000px;
+	height: 800px;
 	position: relative;
 	background-repeat:no-repeat;
 	background-attachment:fixed;
@@ -14,6 +14,15 @@ body{
 
 #div1{
 	background-image: url('../images/waterTexture.jpg');
+	height:1000px;
+}
+
+#sponsorDiv{
+	background-color: #000000;
+	height:200px;
+	margin-top:-20px;
+	color:white;
+	text-align: center;
 }
 
 #div2{
@@ -43,14 +52,31 @@ body{
 
 #welcomeTron{
 	background-color: rgba(0%,0%,0%,0.5);
-	margin-top: 150px;
+	margin-top: 125px;
 	padding-top: 14px;
 	color: white;
 	text-align: center;
-	height:700px;
+	height:725px;
 }
 
 #introducingText{
-	margin-top: 25px;
+	margin-top: 10px;
 	margin-bottom:25px;
+	font-size: 72px;
+}
+
+#introducingText2{
+	margin-bottom:25px;
+}
+
+#descriptionRow{
+	margin-top: 125px;
+	padding-top: 14px;
+	text-align: center;
+	height:725px;
+}
+
+.descriptionThumbnailImage{
+	width:100%;
+	height:320px;
 }
