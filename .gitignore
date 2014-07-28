@@ -37,3 +37,4 @@ Icon
 
 #venv
 venv/
+*.pyc
