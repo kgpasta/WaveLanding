@@ -1,24 +1,11 @@
 import os
-from flask import Flask, render_template, request, jsonify, abort, make_response
+from flask import Flask, render_template, request, abort, make_response
+from flask.ext.pymongo import PyMongo
+from tools import jsonify
 
 app = Flask(__name__)
 
-workouts = [
-    {
-        'id': 1,
-        'title': 'Workout 1',
-        'strokes': 250, 
-        'lengths': 10,
-        'calories': 300,
-    },
-    {
-        'id': 2,
-        'title': 'Workout 2',
-        'strokes': 150, 
-        'lengths': 6,
-        'calories': 150,
-    },
-]
+mongo = PyMongo(app)
 
 @app.route('/',methods=['GET', 'POST'])
 def index():
@@ -34,40 +21,34 @@ def home():
 
 @app.route('/wave/workouts', methods = ['GET'])
 def get_workouts():
-    return jsonify( { 'workouts': workouts } )
+    workoutList = []
+    for workout in mongo.db.workouts.find():
+        workoutList.append(workout)
+    
+    return jsonify({'workouts':workoutList})
 
-@app.route('/wave/workouts/<int:workout_id>', methods = ['GET'])
+@app.route('/wave/workouts/<ObjectId:workout_id>', methods = ['GET'])
 def get_workout(workout_id):
-    workout = filter(lambda t: t['id'] == workout_id, workouts)
-    if len(workout) == 0:
-        abort(404)
-    return jsonify( { 'workout': workout[0] } )
-
-@app.errorhandler(404)
-def not_found(error):
-    return make_response(jsonify( { 'error': 'Not found' } ), 404)
+    workout = mongo.db.workouts.find_one_or_404(workout_id)
+    return jsonify( workout )
 
 @app.route('/wave/workouts', methods = ['POST'])
 def create_workout():
-    print(request.json)
-    if not request.json or not 'title' in request.json:
+    if not request.form or not 'title' in request.form:
         abort(400)
     workout = {
-        'id': workouts[-1]['id'] + 1,
-        'title': request.json['title'],
-        'strokes': request.json['strokes'],
-        'lengths': request.json['lengths'],
-        'calories': request.json['calories']
+        'title': request.form['title'],
+        'strokes': request.form['strokes'],
+        'lengths': request.form['lengths'],
+        'calories': request.form['calories']
     }
-    workouts.append(workout)
+    mongo.db.workouts.insert(workout)
     return jsonify( { 'workouts': workout } ), 201
 
-@app.route('/wave/workouts/<int:task_id>', methods = ['DELETE'])
+@app.route('/wave/workouts/<ObjectId:workout_id>', methods = ['DELETE'])
 def delete_workout(workout_id):
-    workout = filter(lambda t: t['id'] == workout_id, workouts)
-    if len(workout) == 0:
-        abort(404)
-    workouts.remove(workout[0])
+    workout = mongo.db.workouts.find_one_or_404(workout_id)
+    mongo.db.workouts.remove(workout)
     return jsonify( { 'result': True } )
 
 if __name__ == '__main__':
