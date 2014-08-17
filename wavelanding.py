@@ -5,7 +5,13 @@ from tools import jsonify
 
 app = Flask(__name__)
 
-mongo = PyMongo(app)
+MONGO_URL = os.environ.get('MONGOHQ_URL')
+print(MONGO_URL)
+
+if MONGO_URL:
+	app.config['MONGO_URI'] = MONGO_URL
+
+mongo = PyMongo(app,config_prefix='MONGO')
 
 @app.route('/',methods=['GET', 'POST'])
 def index():
